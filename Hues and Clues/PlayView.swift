@@ -31,7 +31,7 @@ struct PlayView: View {
     @State var showSheet = false
     
     @State var totalScore = 0
-    
+    @State var numberComparison = 0
     
     @State var randomKey = ""
     @State var randomValue = ""
@@ -70,6 +70,11 @@ struct PlayView: View {
                             Text("Continue Playing")
                         }
                     }
+                    
+                    VStack{
+                        Text("Total Score:")
+                        Text("\(totalScore)")
+                    }
                     Spacer()
                 }
                 .padding()
@@ -77,11 +82,7 @@ struct PlayView: View {
                 // How to Play
                 HStack{
                     Spacer()
-                    VStack{
-                        Text("Total Score:")
-                        Text("\(totalScore)")
-                    }
-                    
+                    Text("RESTART")
                     Button{
                         // Display InformationView Modally
                         showSheet = true
@@ -104,38 +105,63 @@ struct PlayView: View {
                 
                 ForEach(dataService.colorName(), id: \.self){ color in
                     Button {
+                        
                         //TODO: Based on the clue, Award points for correct answers
                         
-                        var a = 1
-                        var b = 2
-                        var c = 3
-                        var d = 4
-                        var e = 5
+                        let actualLetter = randomValue.split(separator: "")[0]
+                        let actualNumber = randomValue.split(separator: "")[1]
+                        let selectedLetter = color.split(separator: "")[0]
+                        let selectedNumber = color.split(separator: "")[1]
                         
-                        var actualLetterValue = randomValue.split(separator: "")[0]
-                        var actualNumberValue = randomValue.split(separator: "")[1]
-                        var selectedLetterValue = color.split(separator: "")[0]
-                        var selectedNumberValue = color.split(separator: "")[1]
-                        
+                        let actualLetterValue = setNumberComparison(letter: String(actualLetter))
+                        let selectedLetterValue = setNumberComparison(letter: String(selectedLetter))
+
+                        // Correct Answer
                         if color == randomValue {
                             print("Success")
                             totalScore += 3
+                            getRandomClue()
                             
-                            randomKey = dataService.getClues().randomElement()?.key ?? ""
-                            randomValue = dataService.getClues()[randomKey] ?? ""
-                        } else {
+                        } // If C4 Checks B3, B4, B5 and D3, D4, D5
+                        else if ((actualLetterValue == selectedLetterValue + 1) || (actualLetterValue == selectedLetterValue - 1)) && (actualNumber == selectedNumber || Int(actualNumber) == (Int(selectedNumber)! + 1) || Int(actualNumber) == (Int(selectedNumber)! - 1)) {
+                            
+                            print("2nd THIS WAS SCORED")
+                            totalScore += 2
+                            getRandomClue()
+                            
+                        } // If C4 Checks C3 and C5
+                        else if (actualLetterValue == selectedLetterValue) && (Int(actualNumber) == (Int(selectedNumber)! + 1) || Int(actualNumber) == (Int(selectedNumber)! - 1)){
+                            
+                            print(actualLetterValue)
+                            print(selectedLetterValue)
+                            print("3rd THIS WAS SCORED")
+                            totalScore += 2
+                            getRandomClue()
+                            
+                        } // If C4 Checks C2 and C6
+                        else if actualLetterValue == selectedLetterValue && (Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! - 2)){
+                            print("Added in late")
+                            totalScore += 1
+                            getRandomClue()
+                            
+                        } // If C4 Checks b2,b6 & d2,d6
+                        else if ((actualLetterValue == selectedLetterValue + 1) || (actualLetterValue == selectedLetterValue - 1))  && (Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! - 2)) {
+                            
+                            print("4th THIS WAS SCORED")
+                            totalScore += 1
+                            getRandomClue()
+                            
+                        } // If C4 Checks a2,a3,a4,a5,a6 & e2,e3,e4,e5,e6
+                        else if ((actualLetterValue == selectedLetterValue + 2) || (actualLetterValue == selectedLetterValue - 2))  && (Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! + 1) || actualNumber == selectedNumber || Int(actualNumber) == (Int(selectedNumber)! - 1) || Int(actualNumber) == (Int(selectedNumber)! - 2)) {
+                            print("5th THIS WAS SCORED")
+                            totalScore += 1
+                            getRandomClue()
+                            
+                        } // Incorrect Guess
+                        else {
                             print("Too Far for guess")
-                            
-                            randomKey = dataService.getClues().randomElement()?.key ?? ""
-                            randomValue = dataService.getClues()[randomKey] ?? ""
+                            getRandomClue()
                         }
-                        
-                        // MARK: SOLUTION? for first part
-//                        if actualLetterValue == selectedLetterValue && actualNumberValue == selectedNumberValue + 1 ||  actualNumberValue == selectedNumberValue - 1 {
-//                            totalScore += 2
-//                        } else if actualLetterValue == selectedLetterValue && actualNumberValue == selectedNumberValue + 2 ||  actualNumberValue == selectedNumberValue - 2{
-//                            totalScore += 1
-//                        }
                         
                     } label: {
                         Rectangle()
@@ -161,12 +187,57 @@ struct PlayView: View {
         
     }
     
-    func getRandomClue() -> String {
-        let clues = dataService.getClues()
-        let index: Int = Int(arc4random_uniform(UInt32(clues.count)))
-        let randomClue = Array(clues.values)[index]
-        return randomClue
+    func getRandomClue() {
+        randomKey = dataService.getClues().randomElement()?.key ?? ""
+        randomValue = dataService.getClues()[randomKey] ?? ""
     }
+    
+    func setNumberComparison(letter: String) -> Int {
+        if letter == "a" {
+            numberComparison = 1
+        }
+        if letter == "b" {
+            numberComparison = 2
+        }
+        if letter == "c" {
+            numberComparison = 3
+        }
+        if letter == "d" {
+            numberComparison = 4
+        }
+        if letter == "e" {
+            numberComparison = 5
+        }
+        return numberComparison
+    }
+    
+    // MARK: TEST . . . IGNORE
+    func selectedAnswerCheck(actualLetter: String, actualNumber: String, selectedLetter: String, selectedNumber: String) {
+        
+        // If C4 Checks b3b4b5 and d3d4d5
+//        if (actualLetter == selectedLetter + 1) || (actualLetter == selectedLetter - 1) && actualNumber == selectedNumber || Int(actualNumber) == (Int(selectedNumber)! + 1) || Int(actualNumber) == (Int(selectedNumber)! - 1) {
+//            totalScore += 2
+//        }
+        
+            // If C4 Checks C3 and C5
+//        if actualLetter == selectedLetter && Int(actualNumber) == (Int(selectedNumber)! + 1) || Int(actualNumber) == (Int(selectedNumber)! - 1){
+//            totalScore += 2
+//            
+//            // If C4 Checks C2 and C6
+//        } else if actualLetter == selectedLetter && Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! - 2){
+//            totalScore += 1
+//        }
+        
+        // If C4 Checks b2,b6 & d2,d6
+//         else if (actualLetter == selectedLetter + 1) || (actualLetter == selectedLetter - 1)  && Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! - 2) {
+//
+            // If C4 Checks a2,a3,a4,a5,a6 & e2,e3,e4,e5,e6
+//        } else if (actualLetter == selectedLetter + 2) || (actualLetter == selectedLetter - 2)  && Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! + 1) || actualNumber == selectedNumber || Int(actualNumber) == (Int(selectedNumber)! - 1) || Int(actualNumber) == (Int(selectedNumber)! + 2) {
+//
+//        }
+        
+    }
+    
     
 }
 
