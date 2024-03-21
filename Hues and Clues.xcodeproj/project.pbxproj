@@ -8,17 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		FC8673502BABA52C00EF3906 /* Hues_and_CluesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC86734F2BABA52C00EF3906 /* Hues_and_CluesApp.swift */; };
-		FC8673522BABA52C00EF3906 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8673512BABA52C00EF3906 /* ContentView.swift */; };
+		FC8673522BABA52C00EF3906 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8673512BABA52C00EF3906 /* HomeView.swift */; };
 		FC8673542BABA52D00EF3906 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC8673532BABA52D00EF3906 /* Assets.xcassets */; };
 		FC8673572BABA52D00EF3906 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC8673562BABA52D00EF3906 /* Preview Assets.xcassets */; };
+		FC86735E2BABA54A00EF3906 /* PlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC86735D2BABA54A00EF3906 /* PlayView.swift */; };
+		FC8673602BABA55400EF3906 /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC86735F2BABA55400EF3906 /* InformationView.swift */; };
+		FC8673622BABA60700EF3906 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8673612BABA60700EF3906 /* DataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		FC86734C2BABA52C00EF3906 /* Hues and Clues.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hues and Clues.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC86734F2BABA52C00EF3906 /* Hues_and_CluesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hues_and_CluesApp.swift; sourceTree = "<group>"; };
-		FC8673512BABA52C00EF3906 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FC8673512BABA52C00EF3906 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FC8673532BABA52D00EF3906 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FC8673562BABA52D00EF3906 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FC86735D2BABA54A00EF3906 /* PlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayView.swift; sourceTree = "<group>"; };
+		FC86735F2BABA55400EF3906 /* InformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
+		FC8673612BABA60700EF3906 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +58,10 @@
 			isa = PBXGroup;
 			children = (
 				FC86734F2BABA52C00EF3906 /* Hues_and_CluesApp.swift */,
-				FC8673512BABA52C00EF3906 /* ContentView.swift */,
+				FC8673512BABA52C00EF3906 /* HomeView.swift */,
+				FC86735D2BABA54A00EF3906 /* PlayView.swift */,
+				FC86735F2BABA55400EF3906 /* InformationView.swift */,
+				FC8673612BABA60700EF3906 /* DataService.swift */,
 				FC8673532BABA52D00EF3906 /* Assets.xcassets */,
 				FC8673552BABA52D00EF3906 /* Preview Content */,
 			);
@@ -137,8 +146,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FC8673522BABA52C00EF3906 /* ContentView.swift in Sources */,
+				FC86735E2BABA54A00EF3906 /* PlayView.swift in Sources */,
+				FC8673602BABA55400EF3906 /* InformationView.swift in Sources */,
+				FC8673522BABA52C00EF3906 /* HomeView.swift in Sources */,
 				FC8673502BABA52C00EF3906 /* Hues_and_CluesApp.swift in Sources */,
+				FC8673622BABA60700EF3906 /* DataService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,8 +290,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,8 +320,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
