@@ -28,25 +28,35 @@ struct PlayView: View {
         GridItem(.fixed(58), spacing: 0)]
     
     @State var backAlert = false
+    @State var restartAlert = false
     @State var showSheet = false
+    @State var scoring = true
     
     @State var totalScore = 0
     @State var numberComparison = 0
+    @State var actualNumber = 0
+    @State var selectedNumber = 0
+    @State var guessNumber = 0
+    @State var clueNumber = "First Clue: "
+    @State var totalScoreWord = "Total Score:"
     
+    @State var correctAnswer = ""
     @State var randomKey = ""
     @State var randomValue = ""
     
     
     var body: some View {
         
-        
-        
         VStack{
+            // Navigation Bar
             ZStack{
-                Text("First Clue: \(randomKey)")
+                // Title
+                Text("\(clueNumber)\(randomKey)")
                     .font(.largeTitle)
                     .bold()
                     .foregroundStyle(.black)
+                    .padding(.top)
+
                 
                 // Go Back
                 HStack{
@@ -72,17 +82,53 @@ struct PlayView: View {
                     }
                     
                     VStack{
-                        Text("Total Score:")
-                        Text("\(totalScore)")
+                        Text("\(totalScoreWord)")
+                        if totalScoreWord != "" {
+                            Text("\(totalScore)")
+                        }
                     }
                     Spacer()
                 }
-                .padding()
+                .padding(.top)
                 
-                // How to Play
+                // How to Play & Restart
                 HStack{
                     Spacer()
-                    Text("RESTART")
+                    VStack{
+                        Button {
+                            restartAlert = true
+                        } label: {
+                            ZStack{
+                                Rectangle()
+                                    .frame(width: 80, height: 30)
+                                    .clipShape(RoundedRectangle(cornerRadius: 110))
+                                    .foregroundStyle(.gray)
+                                
+                                Text("Restart")
+                                    .foregroundStyle(.white)
+                                    .fontWeight(.semibold)
+                            }
+                        }
+                        
+                        .alert("Are you sure you want to restart?", isPresented: $restartAlert) {
+                            Button {
+                                withAnimation {
+                                    scoring = true
+                                    totalScore = 0
+                                    guessNumber = 0
+                                    clueNumber = "First Clue: "
+                                    totalScoreWord = "Total Score:"
+                                    getRandomClue()
+                                }
+                            } label: {
+                                Text("Restart")
+                            }
+                            Button {
+                            } label: {
+                                Text("Continue Playing")
+                            }
+                        }
+                    }
                     Button{
                         // Display InformationView Modally
                         showSheet = true
@@ -92,7 +138,7 @@ struct PlayView: View {
                             .foregroundStyle(.black)
                     }
                 }
-                .padding()
+                .padding(.top)
                 
             }
             Spacer()
@@ -106,68 +152,45 @@ struct PlayView: View {
                 ForEach(dataService.colorName(), id: \.self){ color in
                     Button {
                         
-                        //TODO: Based on the clue, Award points for correct answers
+                        guessNumber += 1
                         
                         let actualLetter = randomValue.split(separator: "")[0]
-                        let actualNumber = randomValue.split(separator: "")[1]
                         let selectedLetter = color.split(separator: "")[0]
-                        let selectedNumber = color.split(separator: "")[1]
+                        
+                        if let actualNumber = Int(randomValue.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()) {
+                            self.actualNumber = Int(actualNumber)
+                        }
+                        if let selectedNumber = Int(color.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()) {
+                            self.selectedNumber = Int(selectedNumber)
+                        }
                         
                         let actualLetterValue = setNumberComparison(letter: String(actualLetter))
                         let selectedLetterValue = setNumberComparison(letter: String(selectedLetter))
 
-                        // Correct Answer
-                        if color == randomValue {
-                            print("Success")
-                            totalScore += 3
-                            getRandomClue()
-                            
-                        } // If C4 Checks B3, B4, B5 and D3, D4, D5
-                        else if ((actualLetterValue == selectedLetterValue + 1) || (actualLetterValue == selectedLetterValue - 1)) && (actualNumber == selectedNumber || Int(actualNumber) == (Int(selectedNumber)! + 1) || Int(actualNumber) == (Int(selectedNumber)! - 1)) {
-                            
-                            print("2nd THIS WAS SCORED")
-                            totalScore += 2
-                            getRandomClue()
-                            
-                        } // If C4 Checks C3 and C5
-                        else if (actualLetterValue == selectedLetterValue) && (Int(actualNumber) == (Int(selectedNumber)! + 1) || Int(actualNumber) == (Int(selectedNumber)! - 1)){
-                            
-                            print(actualLetterValue)
-                            print(selectedLetterValue)
-                            print("3rd THIS WAS SCORED")
-                            totalScore += 2
-                            getRandomClue()
-                            
-                        } // If C4 Checks C2 and C6
-                        else if actualLetterValue == selectedLetterValue && (Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! - 2)){
-                            print("Added in late")
-                            totalScore += 1
-                            getRandomClue()
-                            
-                        } // If C4 Checks b2,b6 & d2,d6
-                        else if ((actualLetterValue == selectedLetterValue + 1) || (actualLetterValue == selectedLetterValue - 1))  && (Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! - 2)) {
-                            
-                            print("4th THIS WAS SCORED")
-                            totalScore += 1
-                            getRandomClue()
-                            
-                        } // If C4 Checks a2,a3,a4,a5,a6 & e2,e3,e4,e5,e6
-                        else if ((actualLetterValue == selectedLetterValue + 2) || (actualLetterValue == selectedLetterValue - 2))  && (Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! + 1) || actualNumber == selectedNumber || Int(actualNumber) == (Int(selectedNumber)! - 1) || Int(actualNumber) == (Int(selectedNumber)! - 2)) {
-                            print("5th THIS WAS SCORED")
-                            totalScore += 1
-                            getRandomClue()
-                            
-                        } // Incorrect Guess
-                        else {
-                            print("Too Far for guess")
-                            getRandomClue()
+                        if scoring {
+                            selectedAnswerCheck(color: color, actualLetterValue: actualLetterValue, actualNumber: actualNumber, selectedLetterValue: selectedLetterValue, selectedNumber: selectedNumber)
                         }
                         
+                        setClueNumber()
+                        
+                        print("Actual Row: \(actualLetterValue)")
+                        print("Guessed Row: \(selectedLetterValue)")
+                        print("Actual Column: \(actualNumber)")
+                        print("Guessed Column: \(selectedNumber)")
+                        
+                        // TODO: Add a star for the actual, and a finger for there guess
+                        // Image(systemName: "hand.raised.fingers.spread")
+                        // Image(systemName: "star.fill")
+
+                        
                     } label: {
-                        Rectangle()
-                            .foregroundStyle(Color(color))
-                            .frame(width: 58, height: 58)
-                            .border(Color.black, width: 2.5)
+                        ZStack{
+                            Rectangle()
+                                .foregroundStyle(Color(color))
+                                .frame(width: 58, height: 58)
+                                .border(Color.black, width: 2.5)
+                        }
+                        
                     }
                 }
             })
@@ -185,6 +208,31 @@ struct PlayView: View {
             randomValue = dataService.getClues()[randomKey] ?? ""
         })
         
+    }
+    
+    func setClueNumber() {
+        
+        if totalScore == 15 {
+            clueNumber = "Perfect Score: 15"
+        }
+        
+        if guessNumber == 1 {
+            clueNumber = "Second Clue: "
+        }
+        else if guessNumber == 2 {
+            clueNumber = "Third Clue: "
+        }
+        else if guessNumber == 3 {
+            clueNumber = "Fourth Clue: "
+        }
+        else if guessNumber == 4 {
+            clueNumber = "Final Clue: "
+        } else {
+            scoring = false
+            totalScoreWord = ""
+            randomKey = ""
+            clueNumber = "Final Score: \(totalScore)"
+        }
     }
     
     func getRandomClue() {
@@ -211,33 +259,59 @@ struct PlayView: View {
         return numberComparison
     }
     
-    // MARK: TEST . . . IGNORE
-    func selectedAnswerCheck(actualLetter: String, actualNumber: String, selectedLetter: String, selectedNumber: String) {
-        
-        // If C4 Checks b3b4b5 and d3d4d5
-//        if (actualLetter == selectedLetter + 1) || (actualLetter == selectedLetter - 1) && actualNumber == selectedNumber || Int(actualNumber) == (Int(selectedNumber)! + 1) || Int(actualNumber) == (Int(selectedNumber)! - 1) {
-//            totalScore += 2
-//        }
-        
-            // If C4 Checks C3 and C5
-//        if actualLetter == selectedLetter && Int(actualNumber) == (Int(selectedNumber)! + 1) || Int(actualNumber) == (Int(selectedNumber)! - 1){
-//            totalScore += 2
-//            
-//            // If C4 Checks C2 and C6
-//        } else if actualLetter == selectedLetter && Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! - 2){
-//            totalScore += 1
-//        }
-        
-        // If C4 Checks b2,b6 & d2,d6
-//         else if (actualLetter == selectedLetter + 1) || (actualLetter == selectedLetter - 1)  && Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! - 2) {
-//
-            // If C4 Checks a2,a3,a4,a5,a6 & e2,e3,e4,e5,e6
-//        } else if (actualLetter == selectedLetter + 2) || (actualLetter == selectedLetter - 2)  && Int(actualNumber) == (Int(selectedNumber)! + 2) || Int(actualNumber) == (Int(selectedNumber)! + 1) || actualNumber == selectedNumber || Int(actualNumber) == (Int(selectedNumber)! - 1) || Int(actualNumber) == (Int(selectedNumber)! + 2) {
-//
-//        }
-        
+    func selectedAnswerCheck(color: String, actualLetterValue: Int, actualNumber: Int, selectedLetterValue: Int, selectedNumber: Int) {
+        // Correct Answer
+        if color == randomValue {
+            print("Success")
+            totalScore += 3
+            getRandomClue()
+            
+        }
+        // If C4 Checks B3, B4, B5 and D3, D4, D5
+        else if ((actualLetterValue == selectedLetterValue + 1) || (actualLetterValue == selectedLetterValue - 1)) && (actualNumber == selectedNumber || actualNumber == (selectedNumber + 1) || actualNumber == (selectedNumber - 1)) {
+            
+            print("2nd THIS WAS SCORED")
+            totalScore += 2
+            getRandomClue()
+            
+        }
+        // If C4 Checks C3 and C5
+        else if (actualLetterValue == selectedLetterValue) && (actualNumber == (selectedNumber + 1) || actualNumber == (selectedNumber - 1)){
+            
+            print(actualLetterValue)
+            print(selectedLetterValue)
+            print("3rd THIS WAS SCORED")
+            totalScore += 2
+            getRandomClue()
+            
+        }
+        // If C4 Checks C2 and C6
+        else if actualLetterValue == selectedLetterValue && (actualNumber == (selectedNumber + 2) || actualNumber == (selectedNumber - 2)){
+            print("Added in late")
+            totalScore += 1
+            getRandomClue()
+            
+        } // If C4 Checks b2,b6 & d2,d6
+        else if ((actualLetterValue == selectedLetterValue + 1) || (actualLetterValue == selectedLetterValue - 1))  && (actualNumber == (selectedNumber + 2) || actualNumber == (selectedNumber - 2)) {
+            
+            print("4th THIS WAS SCORED")
+            totalScore += 1
+            getRandomClue()
+            
+        }
+        // If C4 Checks a2,a3,a4,a5,a6 & e2,e3,e4,e5,e6
+        else if ((actualLetterValue == selectedLetterValue + 2) || (actualLetterValue == selectedLetterValue - 2))  && (actualNumber == (selectedNumber + 2) || actualNumber == (selectedNumber + 1) || actualNumber == selectedNumber || actualNumber == (selectedNumber - 1) || actualNumber == (selectedNumber - 2)) {
+            print("5th THIS WAS SCORED")
+            totalScore += 1
+            getRandomClue()
+            
+        }
+        // Incorrect Guess
+        else {
+            print("Too Far for guess")
+            getRandomClue()
+        }
     }
-    
     
 }
 

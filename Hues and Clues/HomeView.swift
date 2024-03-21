@@ -17,16 +17,16 @@ struct HomeView: View {
         NavigationStack{
             VStack {
                 HStack{
-                    Text("Hues")
+                    Text("Guess")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(.blue)
                     
-                    Text("&")
+                    Text("This")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(.red)
-                    Text("Clues")
+                    Text("Color")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(.purple)
@@ -79,7 +79,6 @@ struct HomeView: View {
             })
             .onAppear(perform: {
                 playMusic()
-                audioPlayer?.play()
             })
         }
         

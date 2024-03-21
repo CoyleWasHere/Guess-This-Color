@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FC834BAF2BAC9F76003FB31F /* correct.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FC834BAC2BAC9F76003FB31F /* correct.mp3 */; };
+		FC834BB02BAC9F76003FB31F /* TheFatRat_Unity.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FC834BAD2BAC9F76003FB31F /* TheFatRat_Unity.mp3 */; };
 		FC8673502BABA52C00EF3906 /* Hues_and_CluesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC86734F2BABA52C00EF3906 /* Hues_and_CluesApp.swift */; };
 		FC8673522BABA52C00EF3906 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8673512BABA52C00EF3906 /* HomeView.swift */; };
 		FC8673542BABA52D00EF3906 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC8673532BABA52D00EF3906 /* Assets.xcassets */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FC834BAC2BAC9F76003FB31F /* correct.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = correct.mp3; sourceTree = "<group>"; };
+		FC834BAD2BAC9F76003FB31F /* TheFatRat_Unity.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = TheFatRat_Unity.mp3; sourceTree = "<group>"; };
 		FC86734C2BABA52C00EF3906 /* Hues and Clues.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hues and Clues.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC86734F2BABA52C00EF3906 /* Hues_and_CluesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hues_and_CluesApp.swift; sourceTree = "<group>"; };
 		FC8673512BABA52C00EF3906 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -38,6 +42,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FC834BAE2BAC9F76003FB31F /* Hues Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				FC834BAC2BAC9F76003FB31F /* correct.mp3 */,
+				FC834BAD2BAC9F76003FB31F /* TheFatRat_Unity.mp3 */,
+			);
+			path = "Hues Sounds";
+			sourceTree = "<group>";
+		};
 		FC8673432BABA52C00EF3906 = {
 			isa = PBXGroup;
 			children = (
@@ -63,6 +76,7 @@
 				FC86735F2BABA55400EF3906 /* InformationView.swift */,
 				FC8673612BABA60700EF3906 /* DataService.swift */,
 				FC8673532BABA52D00EF3906 /* Assets.xcassets */,
+				FC834BAE2BAC9F76003FB31F /* Hues Sounds */,
 				FC8673552BABA52D00EF3906 /* Preview Content */,
 			);
 			path = "Hues and Clues";
@@ -134,8 +148,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC834BB02BAC9F76003FB31F /* TheFatRat_Unity.mp3 in Resources */,
 				FC8673572BABA52D00EF3906 /* Preview Assets.xcassets in Resources */,
 				FC8673542BABA52D00EF3906 /* Assets.xcassets in Resources */,
+				FC834BAF2BAC9F76003FB31F /* correct.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
