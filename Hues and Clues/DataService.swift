@@ -10,8 +10,6 @@ import SwiftUI
 
 struct DataService {
     func getClues() -> [String:String] {
-        // TODO: CHANGE TO ONLY NUMBERS OVER 10, I.E. D10,B12 ETC. AND SEE IF IT STILL WORKS PROPERLY
-        // TODO: ALSO CAN TEST EVERY NUMBER INDIVIDUALLY, A1 CHECK, A2, CHECK ETC.
         return ["Lemon":"d1",
                 "Rubber Band":"c3",
                 "Grass":"e5",

@@ -6,26 +6,28 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct PlayView: View {
     @Environment(\.dismiss) private var dismiss
+    @State var audioPlayer:AVAudioPlayer?
     
     var dataService:DataService = DataService()
     private var columns: [GridItem] = [
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0),
-        GridItem(.fixed(58), spacing: 0)]
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0),
+        GridItem(.fixed(55), spacing: 0)]
     
     @State var backAlert = false
     @State var restartAlert = false
@@ -43,6 +45,8 @@ struct PlayView: View {
     @State var correctAnswer = ""
     @State var randomKey = ""
     @State var randomValue = ""
+    @State var selectedColor = ""
+    @State var answerColor = ""
     
     
     var body: some View {
@@ -56,7 +60,7 @@ struct PlayView: View {
                     .bold()
                     .foregroundStyle(.black)
                     .padding(.top)
-
+                
                 
                 // Go Back
                 HStack{
@@ -113,6 +117,8 @@ struct PlayView: View {
                         .alert("Are you sure you want to restart?", isPresented: $restartAlert) {
                             Button {
                                 withAnimation {
+                                    selectedColor = ""
+                                    answerColor = ""
                                     scoring = true
                                     totalScore = 0
                                     guessNumber = 0
@@ -151,8 +157,13 @@ struct PlayView: View {
                 
                 ForEach(dataService.colorName(), id: \.self){ color in
                     Button {
-                        
                         guessNumber += 1
+                        
+                        selectedColor = color
+                        answerColor = randomValue
+                        
+                        selectionSound()
+                        audioPlayer?.play()
                         
                         let actualLetter = randomValue.split(separator: "")[0]
                         let selectedLetter = color.split(separator: "")[0]
@@ -166,31 +177,38 @@ struct PlayView: View {
                         
                         let actualLetterValue = setNumberComparison(letter: String(actualLetter))
                         let selectedLetterValue = setNumberComparison(letter: String(selectedLetter))
-
+                        
                         if scoring {
                             selectedAnswerCheck(color: color, actualLetterValue: actualLetterValue, actualNumber: actualNumber, selectedLetterValue: selectedLetterValue, selectedNumber: selectedNumber)
                         }
                         
                         setClueNumber()
                         
-                        print("Actual Row: \(actualLetterValue)")
-                        print("Guessed Row: \(selectedLetterValue)")
-                        print("Actual Column: \(actualNumber)")
-                        print("Guessed Column: \(selectedNumber)")
-                        
-                        // TODO: Add a star for the actual, and a finger for there guess
-                        // Image(systemName: "hand.raised.fingers.spread")
-                        // Image(systemName: "star.fill")
-
+                        // print("Actual Row: \(actualLetterValue)")
+                        // print("Guessed Row: \(selectedLetterValue)")
+                        // print("Actual Column: \(actualNumber)")
+                        // print("Guessed Column: \(selectedNumber)")
+                        // print(selectedColor)
+                        // print(answerColor)
                         
                     } label: {
+                        
                         ZStack{
                             Rectangle()
                                 .foregroundStyle(Color(color))
-                                .frame(width: 58, height: 58)
+                                .frame(width: 55, height: 55)
                                 .border(Color.black, width: 2.5)
+                            HStack{
+                                if selectedColor == color {
+                                    Image(systemName: "hand.raised.fingers.spread")
+                                        .foregroundStyle(.white)
+                                }
+                                if answerColor == color {
+                                    Image(systemName: "star.fill")
+                                        .foregroundStyle(.white)
+                                }
+                            }
                         }
-                        
                     }
                 }
             })
@@ -310,6 +328,21 @@ struct PlayView: View {
         else {
             print("Too Far for guess")
             getRandomClue()
+        }
+    }
+    
+    func selectionSound() {
+        // Load the audio file
+        if let soundURL = Bundle.main.url(forResource: "correct", withExtension: "mp3") {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                audioPlayer?.prepareToPlay()
+                audioPlayer?.numberOfLoops = 0
+            } catch {
+                print("Error loading sound file: \(error.localizedDescription)")
+            }
+        } else {
+            print("Sound file not found")
         }
     }
     
