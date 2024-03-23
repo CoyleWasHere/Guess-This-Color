@@ -125,6 +125,8 @@ struct PlayView: View {
                                     clueNumber = "First Clue: "
                                     totalScoreWord = "Total Score:"
                                     getRandomClue()
+                                    restartSound()
+                                    audioPlayer?.play()
                                 }
                             } label: {
                                 Text("Restart")
@@ -334,6 +336,20 @@ struct PlayView: View {
     func selectionSound() {
         // Load the audio file
         if let soundURL = Bundle.main.url(forResource: "correct", withExtension: "mp3") {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                audioPlayer?.prepareToPlay()
+                audioPlayer?.numberOfLoops = 0
+            } catch {
+                print("Error loading sound file: \(error.localizedDescription)")
+            }
+        } else {
+            print("Sound file not found")
+        }
+    }
+    func restartSound() {
+        // Load the audio file
+        if let soundURL = Bundle.main.url(forResource: "restart", withExtension: "aiff") {
             do {
                 audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
                 audioPlayer?.prepareToPlay()
