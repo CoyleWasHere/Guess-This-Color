@@ -53,103 +53,100 @@ struct PlayView: View {
         
         VStack{
             // Navigation Bar
-            ZStack{
+            VStack(spacing: 0){
+                ZStack{
+                    // Go Back
+                    HStack{
+                        Button{
+                            // Go Back One Page
+                            backAlert = true
+                        }label: {
+                            Image(systemName: "arrowshape.backward.circle.fill")
+                                .font(.largeTitle)
+                                .foregroundStyle(.black)
+                        }
+                        .alert("Are you sure you want to go back?", isPresented: $backAlert) {
+                            Button{
+                                dismiss()
+                            }label: {
+                                Text("Go Back")
+                            }
+                            Button{
+                                
+                            }label: {
+                                Text("Continue Playing")
+                            }
+                        }
+                        
+                        VStack{
+                            Text("\(totalScoreWord)")
+                            if totalScoreWord != "" {
+                                Text("\(totalScore)")
+                            }
+                        }
+                        Spacer()
+                    }
+                    
+                    // How to Play & Restart
+                    HStack{
+                        Spacer()
+                        VStack{
+                            Button {
+                                restartAlert = true
+                            } label: {
+                                ZStack{
+                                    Rectangle()
+                                        .frame(width: 80, height: 30)
+                                        .clipShape(RoundedRectangle(cornerRadius: 110))
+                                        .foregroundStyle(.gray)
+                                    
+                                    Text("Restart")
+                                        .foregroundStyle(.white)
+                                        .fontWeight(.semibold)
+                                }
+                            }
+                            
+                            .alert("Are you sure you want to restart?", isPresented: $restartAlert) {
+                                Button {
+                                    withAnimation {
+                                        selectedColor = ""
+                                        answerColor = ""
+                                        scoring = true
+                                        totalScore = 0
+                                        guessNumber = 0
+                                        clueNumber = "First Clue: "
+                                        totalScoreWord = "Total Score:"
+                                        getRandomClue()
+                                        restartSound()
+                                        audioPlayer?.play()
+                                    }
+                                } label: {
+                                    Text("Restart")
+                                }
+                                Button {
+                                } label: {
+                                    Text("Continue Playing")
+                                }
+                            }
+                        }
+                        Button{
+                            // Display InformationView Modally
+                            showSheet = true
+                        }label: {
+                            Image(systemName: "info.circle.fill")
+                                .font(.largeTitle)
+                                .foregroundStyle(.black)
+                        }
+                    }
+                }
+                .padding(.top, 20)
+                
                 // Title
                 Text("\(clueNumber)\(randomKey)")
                     .font(.largeTitle)
                     .bold()
                     .foregroundStyle(.black)
-                    .padding(.top)
-                
-                
-                // Go Back
-                HStack{
-                    Button{
-                        // Go Back One Page
-                        backAlert = true
-                    }label: {
-                        Image(systemName: "arrowshape.backward.circle.fill")
-                            .font(.largeTitle)
-                            .foregroundStyle(.black)
-                    }
-                    .alert("Are you sure you want to go back?", isPresented: $backAlert) {
-                        Button{
-                            dismiss()
-                        }label: {
-                            Text("Go Back")
-                        }
-                        Button{
-                            
-                        }label: {
-                            Text("Continue Playing")
-                        }
-                    }
-                    
-                    VStack{
-                        Text("\(totalScoreWord)")
-                        if totalScoreWord != "" {
-                            Text("\(totalScore)")
-                        }
-                    }
-                    Spacer()
-                }
-                .padding(.top)
-                
-                // How to Play & Restart
-                HStack{
-                    Spacer()
-                    VStack{
-                        Button {
-                            restartAlert = true
-                        } label: {
-                            ZStack{
-                                Rectangle()
-                                    .frame(width: 80, height: 30)
-                                    .clipShape(RoundedRectangle(cornerRadius: 110))
-                                    .foregroundStyle(.gray)
-                                
-                                Text("Restart")
-                                    .foregroundStyle(.white)
-                                    .fontWeight(.semibold)
-                            }
-                        }
-                        
-                        .alert("Are you sure you want to restart?", isPresented: $restartAlert) {
-                            Button {
-                                withAnimation {
-                                    selectedColor = ""
-                                    answerColor = ""
-                                    scoring = true
-                                    totalScore = 0
-                                    guessNumber = 0
-                                    clueNumber = "First Clue: "
-                                    totalScoreWord = "Total Score:"
-                                    getRandomClue()
-                                    restartSound()
-                                    audioPlayer?.play()
-                                }
-                            } label: {
-                                Text("Restart")
-                            }
-                            Button {
-                            } label: {
-                                Text("Continue Playing")
-                            }
-                        }
-                    }
-                    Button{
-                        // Display InformationView Modally
-                        showSheet = true
-                    }label: {
-                        Image(systemName: "info.circle.fill")
-                            .font(.largeTitle)
-                            .foregroundStyle(.black)
-                    }
-                }
-                .padding(.top)
-                
             }
-            Spacer()
             
             
             LazyVGrid(columns: columns,
@@ -252,6 +249,8 @@ struct PlayView: View {
             totalScoreWord = ""
             randomKey = ""
             clueNumber = "Final Score: \(totalScore)"
+            finish()
+            audioPlayer?.play()
         }
     }
     
@@ -350,6 +349,20 @@ struct PlayView: View {
     func restartSound() {
         // Load the audio file
         if let soundURL = Bundle.main.url(forResource: "restart", withExtension: "aiff") {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                audioPlayer?.prepareToPlay()
+                audioPlayer?.numberOfLoops = 0
+            } catch {
+                print("Error loading sound file: \(error.localizedDescription)")
+            }
+        } else {
+            print("Sound file not found")
+        }
+    }
+    func finish() {
+        // Load the audio file
+        if let soundURL = Bundle.main.url(forResource: "success", withExtension: "mp3") {
             do {
                 audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
                 audioPlayer?.prepareToPlay()
