@@ -23,6 +23,7 @@
 		FC834BAC2BAC9F76003FB31F /* correct.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = correct.mp3; sourceTree = "<group>"; };
 		FC834BAD2BAC9F76003FB31F /* TheFatRat_Unity.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = TheFatRat_Unity.mp3; sourceTree = "<group>"; };
 		FC834BB12BAE7F7A003FB31F /* restart.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = restart.aiff; sourceTree = "<group>"; };
+		FC834BB32BAF769A003FB31F /* Hues-and-Clues-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Hues-and-Clues-Info.plist"; sourceTree = SOURCE_ROOT; };
 		FC86734C2BABA52C00EF3906 /* Hues and Clues.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hues and Clues.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC86734F2BABA52C00EF3906 /* Hues_and_CluesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hues_and_CluesApp.swift; sourceTree = "<group>"; };
 		FC8673512BABA52C00EF3906 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -73,6 +74,7 @@
 		FC86734E2BABA52C00EF3906 /* Hues and Clues */ = {
 			isa = PBXGroup;
 			children = (
+				FC834BB32BAF769A003FB31F /* Hues-and-Clues-Info.plist */,
 				FC86734F2BABA52C00EF3906 /* Hues_and_CluesApp.swift */,
 				FC8673512BABA52C00EF3906 /* HomeView.swift */,
 				FC86735D2BABA54A00EF3906 /* PlayView.swift */,
@@ -307,6 +309,7 @@
 				DEVELOPMENT_TEAM = GMX7FB8LGL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Hues-and-Clues-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -318,7 +321,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.DanielCoyle.Hues-and-Clues";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.DanielCoyle.Guess-This-Color";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -337,6 +340,7 @@
 				DEVELOPMENT_TEAM = GMX7FB8LGL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Hues-and-Clues-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -348,7 +352,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.DanielCoyle.Hues-and-Clues";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.DanielCoyle.Guess-This-Color";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
